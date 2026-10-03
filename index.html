@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PS Database — 6.600+ Game PS2 & PS3</title>
+<meta name="description" content="Database 6.600+ game PlayStation 2 & PlayStation 3. Cari, filter, dan temukan game dengan cerita terbaik.">
+<meta name="theme-color" content="#0d1226">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self';">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#0d1226;color:#e8ecf8;-webkit-tap-highlight-color:transparent;min-height:100vh}
+.hero{background:radial-gradient(120% 130% at 50% 0%,#1c2b5e 0%,#0d1226 65%);padding:30px 18px 24px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 34px,rgba(90,140,255,.045) 34px 36px);pointer-events:none}
+.eyebrow{display:inline-block;position:relative;z-index:1;font-size:10.5px;font-weight:800;letter-spacing:4px;color:#0d1226;background:linear-gradient(135deg,#7dd3fc,#38bdf8);padding:6px 16px;border-radius:999px;text-transform:uppercase}
+.hero h1{position:relative;z-index:1;font-size:30px;font-weight:800;margin:14px 0 6px;letter-spacing:.5px}
+.hero h1 .ps2{color:#7dd3fc}.hero h1 .ps3{color:#c4b5fd}
+.hero .sub{position:relative;z-index:1;color:#9fb0d8;font-size:13.5px}
+.stats{display:flex;gap:10px;justify-content:center;margin-top:16px;position:relative;z-index:1;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.06);border:1px solid rgba(125,211,252,.25);border-radius:14px;padding:8px 18px;backdrop-filter:blur(4px)}
+.stat b{display:block;font-size:19px;color:#fff}
+.stat span{font-size:11px;color:#9fb0d8;letter-spacing:1px;text-transform:uppercase}
+.tabs{position:sticky;top:0;z-index:30;display:flex;background:rgba(13,18,38,.92);backdrop-filter:blur(14px);border-bottom:1px solid #1e2a52;padding:10px 12px;gap:8px}
+.tabs button{flex:1;border:none;background:#16204a;color:#9fb0d8;font-size:14px;font-weight:700;padding:11px;border-radius:12px;cursor:pointer;transition:all .15s}
+.tabs button.active{background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;box-shadow:0 4px 14px rgba(56,189,248,.35)}
+.toolbar{padding:14px 14px 6px;max-width:760px;margin:0 auto}
+.search{position:relative;margin-bottom:10px}
+.search input{width:100%;padding:13px 16px 13px 44px;border:1px solid #24315e;border-radius:14px;font-size:15px;background:#141c3d;color:#e8ecf8;outline:none}
+.search input:focus{border-color:#38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,.25)}
+.search input::placeholder{color:#5b6b96}
+.search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:19px;height:19px;stroke:#5b6b96;fill:none;stroke-width:2}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.chip{border:1px solid #24315e;background:#141c3d;color:#9fb0d8;font-size:13px;font-weight:600;padding:8px 16px;border-radius:999px;cursor:pointer}
+.chip.active{background:#38bdf8;border-color:#38bdf8;color:#0d1226;font-weight:700}
+main{max-width:760px;margin:0 auto;padding:8px 14px 60px}
+.count{font-size:12.5px;color:#5b6b96;margin:6px 2px 12px}
+.list{display:flex;flex-direction:column;gap:10px}
+.gcard{background:#141c3d;border:1px solid #1e2a52;border-radius:14px;padding:13px 15px;cursor:pointer;transition:all .15s;display:flex;gap:12px;align-items:center}
+.gcard:hover{border-color:#38bdf8;transform:translateY(-1px)}
+.gcard:active{transform:scale(.99)}
+.plat{flex:0 0 auto;font-size:11px;font-weight:800;padding:5px 10px;border-radius:8px;letter-spacing:.5px}
+.plat.p2{background:rgba(125,211,252,.15);color:#7dd3fc;border:1px solid rgba(125,211,252,.4)}
+.plat.p3{background:rgba(196,181,253,.15);color:#c4b5fd;border:1px solid rgba(196,181,253,.4)}
+.ginfo{flex:1;min-width:0}
+.ginfo h3{font-size:14.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ginfo .meta{font-size:12px;color:#5b6b96;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbadge{flex:0 0 auto;font-size:16px}
+.more{display:block;width:100%;margin:18px 0 6px;border:1px solid #24315e;background:#16204a;color:#7dd3fc;font-size:14px;font-weight:700;padding:13px;border-radius:14px;cursor:pointer}
+.more:active{transform:scale(.98)}
+.empty{text-align:center;color:#5b6b96;padding:50px 20px;font-size:14.5px;background:#141c3d;border-radius:14px;border:1px dashed #24315e}
+/* story cards */
+.scard{background:linear-gradient(135deg,#16204a,#1a1440);border:1px solid #2a3568;border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .15s}
+.scard:hover{border-color:#c4b5fd;transform:translateY(-2px)}
+.scard .top{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.scard h3{font-size:16px;font-weight:750;flex:1}
+.hours{font-size:11.5px;font-weight:800;color:#0d1226;background:linear-gradient(135deg,#fde68a,#f59e0b);padding:5px 11px;border-radius:999px;white-space:nowrap}
+.scard p{font-size:13.5px;color:#b9c4e4;line-height:1.55}
+.stag{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;color:#7dd3fc}
+.stag.s2{color:#c4b5fd}
+/* modal */
+.modal-ov{position:fixed;inset:0;background:rgba(5,8,20,.75);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;z-index:100}
+.modal-ov.open{display:flex}
+.modal{background:#16204a;border:1px solid #2a3568;border-radius:22px 22px 0 0;max-width:560px;width:100%;padding:22px 22px 34px;animation:up .22s ease;max-height:88vh;overflow-y:auto}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.modal h2{font-size:20px;font-weight:750;margin-bottom:4px;padding-right:36px}
+.mrow{display:flex;gap:10px;font-size:13.5px;padding:9px 0;border-bottom:1px solid #1e2a52}
+.mrow .k{flex:0 0 92px;color:#5b6b96;font-weight:600}
+.mrow .v{flex:1;color:#dbe3f8}
+.mrow .v a{color:#7dd3fc}
+.mdesc{font-size:13.5px;color:#b9c4e4;line-height:1.6;background:#10173a;border-radius:12px;padding:12px 14px;margin-top:12px}
+.modal-x{position:absolute;top:14px;right:16px;width:36px;height:36px;border-radius:50%;border:none;background:#0d1226;color:#9fb0d8;font-size:20px;cursor:pointer}
+.mwrap{position:relative}
+/* info */
+.info{background:#141c3d;border:1px solid #1e2a52;border-radius:16px;padding:20px;font-size:14px;line-height:1.7;color:#b9c4e4}
+.info h3{color:#fff;font-size:16px;margin:16px 0 8px}
+.info h3:first-child{margin-top:0}
+.info b{color:#7dd3fc}
+footer{text-align:center;padding:26px 18px;color:#3d4a75;font-size:12.5px}
+#top{position:fixed;right:16px;bottom:16px;width:48px;height:48px;border-radius:50%;border:none;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;font-size:20px;cursor:pointer;display:none;box-shadow:0 6px 18px rgba(56,189,248,.4);z-index:40}
+#top.show{display:block}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="eyebrow">Database Game</div>
+  <h1><span class="ps2">PS2</span> &times; <span class="ps3">PS3</span></h1>
+  <div class="sub">Seluruh katalog game PlayStation 2 &amp; 3 dalam genggaman</div>
+  <div class="stats">
+    <div class="stat"><b id="stPs2">–</b><span>Game PS2</span></div>
+    <div class="stat"><b id="stPs3">–</b><span>Game PS3</span></div>
+    <div class="stat"><b id="stStory">–</b><span>Cerita Pilihan</span></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="cari" class="active">🔍 Cari</button>
+  <button data-tab="cerita">⭐ Cerita</button>
+  <button data-tab="info">ℹ️ Info</button>
+</nav>
+
+<main>
+  <section id="tab-cari">
+    <div class="toolbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        <input id="q" type="search" placeholder="Cari judul game…" autocomplete="off">
+      </div>
+      <div class="filters" id="fPlat">
+        <button class="chip active" data-p="all">Semua</button>
+        <button class="chip" data-p="2">PS2</button>
+        <button class="chip" data-p="3">PS3</button>
+      </div>
+      <div class="filters" id="fSort" style="margin-top:8px">
+        <button class="chip active" data-s="az">A–Z</button>
+        <button class="chip" data-s="year-desc">Tahun ↓</button>
+        <button class="chip" data-s="year-asc">Tahun ↑</button>
+      </div>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="list" id="list"></div>
+    <button class="more" id="moreBtn">Muat lebih banyak ↓</button>
+  </section>
+
+  <section id="tab-cerita" hidden>
+    <div class="toolbar">
+      <div class="filters" id="fStory">
+        <button class="chip active" data-b="all">Semua</button>
+        <button class="chip" data-b="epik">⭐ Cerita Epik</button>
+        <button class="chip" data-b="sinema">🎬 Sinematik</button>
+      </div>
+    </div>
+    <div id="storyList"></div>
+  </section>
+
+  <section id="tab-info" hidden>
+    <div class="info">
+      <h3>📀 Tentang database ini</h3>
+      <p><b id="infoTotal">–</b> game PlayStation 2 &amp; PlayStation 3, lengkap dengan tahun rilis, developer, dan publisher. Data katalog dari basis data komunitas EveryVideoGameEver.</p>
+      <h3>⭐ Cerita Pilihan</h3>
+      <p>Game bertanda <b>⭐ Cerita Epik</b> punya jalan cerita super panjang (40–120 jam, mayoritas RPG). <b>🎬 Sinematik</b> = cerita sekelas film, durasi lebih padat (8–40 jam). Ketuk kartunya buat lihat sinopsis.</p>
+      <h3>🔍 Tips</h3>
+      <p>Gunakan kolom cari + filter platform. Ketuk game mana pun untuk detail &amp; link Wikipedia-nya.</p>
+    </div>
+  </section>
+</main>
+
+<footer>Dibuat oleh Depa Pranata • Data: EveryVideoGameEver (komunitas)</footer>
+<button id="top" aria-label="Ke atas">↑</button>
+
+<div class="modal-ov" id="modalOv">
+  <div class="mwrap" style="width:100%;max-width:560px">
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-x" id="modalX" aria-label="Tutup">×</button>
+      <div id="mBody"></div>
+    </div>
+  </div>
+</div>
+
+<script src="games.js"></script>
+<script src="story.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const listEl = $('#list'), countEl = $('#count'), moreBtn = $('#moreBtn'), qEl = $('#q');
+let fPlat = 'all', fSort = 'az', query = '', shown = 0;
+const PAGE = 60;
+let filtered = [];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function applyFilter(){
+  const q = query.trim().toLowerCase();
+  filtered = GAMES.filter(g => {
+    if(fPlat !== 'all' && String(g[1]) !== fPlat) return false;
+    if(q && !g[0].toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if(fSort === 'az') filtered.sort((a,b) => a[0].localeCompare(b[0]));
+  else if(fSort === 'year-desc') filtered.sort((a,b) => (parseInt(b[2])||0) - (parseInt(a[2])||0) || a[0].localeCompare(b[0]));
+  else filtered.sort((a,b) => (parseInt(a[2])||0) - (parseInt(b[2])||0) || a[0].localeCompare(b[0]));
+  shown = 0;
+  listEl.innerHTML = '';
+  renderMore();
+}
+
+function gameCard(g){
+  const st = STORY[g[0]];
+  return `<div class="gcard" data-t="${esc(g[0])}">
+    <span class="plat p${g[1]}">PS${g[1]}</span>
+    <div class="ginfo"><h3>${esc(g[0])}</h3>
+    <div class="meta">${esc(g[2]||'—')} • ${esc(g[3]||'—')}</div></div>
+    ${st ? `<span class="sbadge">${st[0]==='epik'?'⭐':'🎬'}</span>` : ''}
+  </div>`;
+}
+
+function renderMore(){
+  const slice = filtered.slice(shown, shown + PAGE);
+  const tmp = document.createElement('div');
+  tmp.innerHTML = slice.map(gameCard).join('');
+  [...tmp.children].forEach(c => {
+    c.addEventListener('click', () => openModal(c.dataset.t));
+    listEl.appendChild(c);
+  });
+  shown += slice.length;
+  countEl.textContent = `Menampilkan ${shown} dari ${filtered.length} game`;
+  moreBtn.style.display = shown < filtered.length ? 'block' : 'none';
+  if(!filtered.length) listEl.innerHTML = `<div class="empty">Game tidak ditemukan.<br>Coba kata kunci lain.</div>`;
+}
+
+function openModal(title){
+  const g = GAMES.find(x => x[0] === title);
+  if(!g) return;
+  const st = STORY[title];
+  $('#mBody').innerHTML = `
+    <h2>${esc(g[0])}</h2>
+    <div class="mrow"><span class="k">Platform</span><span class="v">PlayStation ${g[1]}</span></div>
+    <div class="mrow"><span class="k">Tahun</span><span class="v">${esc(g[2]||'—')}</span></div>
+    <div class="mrow"><span class="k">Developer</span><span class="v">${esc(g[3]||'—')}</span></div>
+    <div class="mrow"><span class="k">Publisher</span><span class="v">${esc(g[4]||'—')}</span></div>
+    ${g[5] ? `<div class="mrow"><span class="k">Wiki</span><span class="v"><a href="${esc(g[5])}" target="_blank" rel="noopener">Lihat di Wikipedia ↗</a></span></div>` : ''}
+    ${st ? `<div class="mdesc">${st[0]==='epik'?'⭐ <b>Cerita Epik</b>':'🎬 <b>Sinematik</b>'} • ${esc(st[1])}<br><br>${esc(st[2])}</div>` : ''}`;
+  $('#modalOv').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){ $('#modalOv').classList.remove('open'); document.body.style.overflow = ''; }
+
+// story tab
+let fBadge = 'all';
+function renderStory(){
+  const keys = Object.keys(STORY).filter(t => fBadge==='all' || STORY[t][0]===fBadge);
+  const groups = {epik: [], sinema: []};
+  keys.forEach(t => {
+    const g = GAMES.find(x => x[0] === t);
+    groups[STORY[t][0]].push([t, g]);
+  });
+  const block = (arr, label, cls) => arr.length ? `<div class="stag ${cls}">${label} (${arr.length})</div>` + arr.map(([t,g]) =>
+    `<div class="scard" data-t="${esc(t)}"><div class="top"><h3>${esc(t)}</h3><span class="hours">${esc(STORY[t][1])}</span></div><p>${esc(STORY[t][2])}</p></div>`
+  ).join('') : '';
+  $('#storyList').innerHTML = block(groups.epik,'⭐ Cerita Epik — super panjang','') + block(groups.sinema,'🎬 Sinematik — padat kayak film','s2');
+  document.querySelectorAll('.scard').forEach(c => c.addEventListener('click', () => openModal(c.dataset.t)));
+}
+
+// tabs
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  ['cari','cerita','info'].forEach(t => $('#tab-'+t).hidden = t !== b.dataset.tab);
+  window.scrollTo({top:0});
+}));
+
+// filters
+$('#fPlat').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if(!b) return;
+  document.querySelectorAll('#fPlat .chip').forEach(x => x.classList.remove('active'));
+  b.classList.add('active'); fPlat = b.dataset.p; applyFilter();
+});
+$('#fSort').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if(!b) return;
+  document.querySelectorAll('#fSort .chip').forEach(x => x.classList.remove('active'));
+  b.classList.add('active'); fSort = b.dataset.s; applyFilter();
+});
+$('#fStory').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if(!b) return;
+  document.querySelectorAll('#fStory .chip').forEach(x => x.classList.remove('active'));
+  b.classList.add('active'); fBadge = b.dataset.b; renderStory();
+});
+qEl.addEventListener('input', () => { query = qEl.value; applyFilter(); });
+moreBtn.addEventListener('click', renderMore);
+$('#modalX').addEventListener('click', closeModal);
+$('#modalOv').addEventListener('click', e => { if(e.target.id === 'modalOv') closeModal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+window.addEventListener('scroll', () => $('#top').classList.toggle('show', window.scrollY > 600), {passive:true});
+$('#top').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+// stats
+$('#stPs2').textContent = GAMES.filter(g => g[1]===2).length.toLocaleString('id-ID');
+$('#stPs3').textContent = GAMES.filter(g => g[1]===3).length.toLocaleString('id-ID');
+$('#stStory').textContent = Object.keys(STORY).length;
+$('#infoTotal').textContent = GAMES.length.toLocaleString('id-ID');
+applyFilter();
+renderStory();
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}</script>
+</body>
+</html>
